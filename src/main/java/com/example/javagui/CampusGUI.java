@@ -2,20 +2,18 @@ package com.example.javagui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class CampusGUI extends Application {
     private Director director;
-    private ArrayList<Department> departments=new ArrayList<>();
+    private ArrayList<Department> departments = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -49,23 +47,33 @@ public class CampusGUI extends Application {
 
         // Set column constraints
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPrefWidth(100);
-        gridPane.getColumnConstraints().add(col1);
-
+        col1.setPercentWidth(30);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPrefWidth(300);
-        gridPane.getColumnConstraints().add(col2);
+        col2.setPercentWidth(70);
+        gridPane.getColumnConstraints().addAll(col1, col2);
+
+        // Add label and text field for Campus name
+        Label nameLabel = new Label("Name:");
+        TextField nameField = new TextField();
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameField, 1, 0);
+
+        // Add label and text field for Campus address
+        Label addressLabel = new Label("Address:");
+        TextField addressField = new TextField();
+        gridPane.add(addressLabel, 0, 1);
+        gridPane.add(addressField, 1, 1);
 
         // Add label and text field for Director's name and grade
         Label directorNameLabel = new Label("Director Name:");
         TextField directorNameField = new TextField();
-        gridPane.add(directorNameLabel, 0, 0);
-        gridPane.add(directorNameField, 1, 0);
+        gridPane.add(directorNameLabel, 0, 2);
+        gridPane.add(directorNameField, 1, 2);
 
         Label directorGradeLabel = new Label("Director Grade:");
         TextField directorGradeField = new TextField();
-        gridPane.add(directorGradeLabel, 0, 1);
-        gridPane.add(directorGradeField, 1, 1);
+        gridPane.add(directorGradeLabel, 0, 3);
+        gridPane.add(directorGradeField, 1, 3);
 
         // Add button to add departments
         Button addDepartmentButton = new Button("Add Department");
@@ -80,28 +88,36 @@ public class CampusGUI extends Application {
             }
         });
 
-        gridPane.add(addDepartmentButton, 0, 2, 2, 1); // Span the button across two columns
+        gridPane.add(addDepartmentButton, 0, 4, 2, 1); // Span the button across two columns
 
-        Scene scene = new Scene(gridPane, 400, 200);
         // Add button to submit the form
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             // Get the values from the text fields
+            String campusName = nameField.getText();
+            String campusAddress = addressField.getText();
             String directorName = directorNameField.getText();
             String directorGrade = directorGradeField.getText();
 
-            // Create an instance of Director with the retrieved values
-            director = new Director(directorName, directorGrade);
+            // Create an instance of Campus with the retrieved values
+            Campus campus = new Campus(campusName, campusAddress, new Director(directorName, directorGrade), departments);
 
             // Display the values
-            System.out.println("Director: " + director);
-            System.out.println("Departments: " + departments);
+            System.out.println("Campus: " + campus);
+
+            // Save the campus object to a file or perform other operations
+
         });
 
-        gridPane.add(submitButton, 0, 3, 2, 1); // Span the button across two columns
+        gridPane.add(submitButton, 1, 4); // Place the submit button in the second column and sixth row
 
+        // Align the grid pane within the screen
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setMinSize(400, 200); // Set a minimum size for the grid pane
 
+        Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
+

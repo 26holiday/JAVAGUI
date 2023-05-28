@@ -3,6 +3,10 @@ package com.example.javagui;
 import java.util.ArrayList;
 
 public class Department {
+    public Department(HOD hod) {
+        this.hod = hod;
+        this.labs = new ArrayList<>();
+    }
     HOD hod;
     ArrayList<Lab> labs;
 

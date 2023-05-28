@@ -19,6 +19,16 @@ public class Campus {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Campus{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", director=" + director +
+                ", departments=" + departments +
+                '}';
+    }
+
     public void setName(String name) {
         this.name = name;
     }

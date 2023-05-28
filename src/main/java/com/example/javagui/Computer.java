@@ -10,14 +10,7 @@ public class Computer implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Computer{" +
-                "systemId='" + systemId + '\'' +
-                ", systemName='" + systemName + '\'' +
-                ", systemSpeed='" + systemSpeed + '\'' +
-                ", ramSize='" + ramSize + '\'' +
-                ", hardDiskSize='" + hardDiskSize + '\'' +
-                ", icdMakeModel='" + icdMakeModel + '\'' +
-                '}';
+        return systemName;
     }
 
     private static int counter=1;
