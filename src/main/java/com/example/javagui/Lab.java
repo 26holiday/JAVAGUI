@@ -3,22 +3,22 @@ package com.example.javagui;
 import java.util.ArrayList;
 
 public class Lab {
-    String labStaffIncharge;
+    LabStaff incharge;
     boolean hasProjector;
     ArrayList<Computer> computers;
 
-    public Lab(String labStaffIncharge, boolean hasProjector, ArrayList<Computer> computers) {
-        this.labStaffIncharge = labStaffIncharge;
+    public Lab(LabStaff incharge, boolean hasProjector, ArrayList<Computer> computers) {
+        this.incharge =incharge;
         this.hasProjector = hasProjector;
         this.computers = computers;
     }
 
-    public String getLabStaffIncharge() {
-        return labStaffIncharge;
+    public LabStaff getIncharge() {
+        return incharge;
     }
 
-    public void setLabStaffIncharge(String labStaffIncharge) {
-        this.labStaffIncharge = labStaffIncharge;
+    public void setIncharge(LabStaff labStaffIncharge) {
+        this.incharge = labStaffIncharge;
     }
 
     public boolean isHasProjector() {
@@ -64,10 +64,12 @@ public class Lab {
 
     }
 
-
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return "Lab{" +
+                "incharge=" + incharge +
+                ", hasProjector=" + hasProjector +
+                ", computers=" + computers +
+                '}';
     }
 }

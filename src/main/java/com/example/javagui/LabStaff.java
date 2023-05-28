@@ -1,17 +1,9 @@
 package com.example.javagui;
 
-public class LabStaff {
-    private Employee staffDetails;
+public class LabStaff extends Employee{
 
-    public LabStaff(Employee staffDetails) {
-        this.staffDetails = staffDetails;
+    public LabStaff(String name, String grade) {
+        super(name, grade);
     }
 
-    public Employee getStaffDetails() {
-        return staffDetails;
-    }
-
-    public void setStaffDetails(Employee staffDetails) {
-        this.staffDetails = staffDetails;
-    }
 }
