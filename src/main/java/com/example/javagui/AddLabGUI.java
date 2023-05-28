@@ -13,39 +13,40 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class AddLabGUI extends Application {
+public class AddLabGUI {
 
-    ArrayList<Lab> labs = new ArrayList<>();
-    ArrayList<LabStaff> labStaff = new ArrayList<>();
-    boolean hasProjector;
-    ArrayList<Computer> computers = new ArrayList<>();
+    static ArrayList<Lab> labs = new ArrayList<>();
+    static ArrayList<LabStaff> labStaff = new ArrayList<>();
+    static boolean hasProjector;
+    static ArrayList<Computer> computers = new ArrayList<>();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
-    public void addLab(LabStaff incharge, ArrayList<LabStaff> labStaff, boolean hasProjector, ArrayList<Computer> computers) {
+    public static void addLab(LabStaff incharge, ArrayList<LabStaff> labStaff, boolean hasProjector, ArrayList<Computer> computers) {
         Lab lab = new Lab(incharge, hasProjector, computers, labStaff);
         labs.add(lab);
         System.out.println("Lab added: " + lab.toString());
         serializeLabs(labs);
     }
 
-    public void addComputer(Computer computer) {
+    public static void addComputer(Computer computer) {
         computers.add(computer);
         System.out.println("Computer added: " + computer.getSystemDetails());
         serializeComputers(computers);
     }
 
     //method to add lab staff
-    public void addLabStaff(LabStaff LabStaff) {
+    public static void addLabStaff(LabStaff LabStaff) {
         labStaff.add(LabStaff);
         System.out.println("Lab Staff added: " + labStaff.toString());
 //        serializeLabStaff(labStaff);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public static ArrayList<Lab> getLabs() {
+        return labs;
+    }
+
+    public static void display() {
+        Stage primaryStage = new Stage();
         primaryStage.setTitle("Add Lab");
 
         // Create the GridPane layout
