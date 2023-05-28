@@ -1,6 +1,6 @@
 package com.example.javagui;
 
-public class Employee {
+public class Employee implements java.io.Serializable{
     private String name;
     private String grade;
 

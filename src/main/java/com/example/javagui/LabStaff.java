@@ -1,6 +1,6 @@
 package com.example.javagui;
-
-public class LabStaff extends Employee{
+import java.io.Serializable;
+public class LabStaff extends Employee implements Serializable{
 
     public LabStaff(String name, String grade) {
         super(name, grade);

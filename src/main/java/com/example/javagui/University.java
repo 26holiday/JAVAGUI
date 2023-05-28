@@ -12,7 +12,7 @@ import java.io.File;  // Import the File class
 import java.io.IOException;  // Import the IOException class to handle errors
 
 
-public class University {
+public class University implements java.io.Serializable{
     String name;
     ArrayList<Campus> campuses;
 

@@ -2,7 +2,7 @@ package com.example.javagui;
 
 import java.util.ArrayList;
 
-public class Lab {
+public class Lab implements java.io.Serializable{
     LabStaff incharge;
     boolean hasProjector;
     ArrayList<Computer> computers;
