@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class DepartmentGUI extends Application {
+public class DepartmentGUI {
     private HOD hod;
     private ArrayList<Lab> labs;
+
 
     public HOD getHod() {
         return hod;
@@ -33,8 +34,8 @@ public class DepartmentGUI extends Application {
         this.labs = labs;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+
+    public void display(Stage primaryStage) {
         primaryStage.setTitle("Department GUI");
 
         // Create the GridPane layout
@@ -98,8 +99,5 @@ public class DepartmentGUI extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
 
