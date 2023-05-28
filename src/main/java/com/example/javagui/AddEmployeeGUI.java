@@ -14,7 +14,7 @@ import java.io.*;
 
 public class AddEmployeeGUI extends Application {
 
-    ArrayList<Employee> employees = new ArrayList<>();
+    ArrayList<Employee> employees;
     String employeeType;
 
     public static void main(String[] args) {
@@ -70,26 +70,30 @@ public class AddEmployeeGUI extends Application {
             if (employeeType.equals("HOD")) {
                 // Create an HOD object
                 HOD hod = new HOD(name, grade);
+                employees = deserializeEmployees(employees);
                 employees.add(hod);
                 System.out.println("HOD added: " + name + " (" + grade + ")");
             } else if (employeeType.equals("Lab Incharge")) {
                 // Create a LabIncharge object
                 LabStaff labIncharge = new LabStaff(name, grade);
+                employees = deserializeEmployees(employees);
                 employees.add(labIncharge);
                 System.out.println("Lab Incharge added: " + name + " (" + grade + ")");
             } else if (employeeType.equals("Director")) {
                 // Create a Director object
                 Director director = new Director(name, grade);
+                employees = deserializeEmployees(employees);
                 employees.add(director);
                 System.out.println("Director added: " + name + " (" + grade + ")");
             } else if (employeeType.equals("Lab Staff")) {
                 // Create a LabStaff object
                 LabStaff labStaff = new LabStaff(name, grade);
+                    employees = deserializeEmployees(employees);
                 employees.add(labStaff);
                 System.out.println("Lab Staff added: " + name + " (" + grade + ")");
             }
-//            deserializeEmployees();
-//            serializeEmployees(employees);
+
+            serializeEmployees(employees);
 
             nameField.clear();
             gradeField.clear();
@@ -115,8 +119,8 @@ public class AddEmployeeGUI extends Application {
         }
     }
 
-    public static ArrayList<Employee> deserializeEmployees() {
-        ArrayList<Employee> employees = new ArrayList<>();
+    public static ArrayList<Employee> deserializeEmployees(ArrayList<Employee> employees) {
+
         try {
             FileInputStream fileIn = new FileInputStream("Employees.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
