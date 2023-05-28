@@ -24,7 +24,7 @@ public class AddLabGUI extends Application {
         launch(args);
     }
 
-    public void addLab(LabStaff incharge, boolean hasProjector, ArrayList<Computer> computers) {
+    public void addLab(LabStaff incharge, ArrayList<LabStaff> labStaff, boolean hasProjector, ArrayList<Computer> computers) {
         Lab lab = new Lab(incharge, hasProjector, computers, labStaff);
         labs.add(lab);
         System.out.println("Lab added: " + lab.toString());
@@ -213,7 +213,7 @@ public class AddLabGUI extends Application {
             LabStaff incharge = new LabStaff(inchargeName, inchargeGrade);
 
             boolean hasProjector = projectorCheckBox.isSelected();
-            addLab(incharge, hasProjector, computers);
+            addLab(incharge, labStaff , hasProjector, computers);
             computers.clear(); // Clear the computers list
             computerTextArea.clear(); // Clear the computer details text area
         });
