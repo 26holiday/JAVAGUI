@@ -1,12 +1,25 @@
 package com.example.javagui;
 
-public class Computer {
+public class Computer implements java.io.Serializable {
     private String systemId;
     private String systemName;
     private String systemSpeed;
     private String ramSize;
     private String hardDiskSize;
     private String icdMakeModel;
+
+    @Override
+    public String toString() {
+        return "Computer{" +
+                "systemId='" + systemId + '\'' +
+                ", systemName='" + systemName + '\'' +
+                ", systemSpeed='" + systemSpeed + '\'' +
+                ", ramSize='" + ramSize + '\'' +
+                ", hardDiskSize='" + hardDiskSize + '\'' +
+                ", icdMakeModel='" + icdMakeModel + '\'' +
+                '}';
+    }
+
     private static int counter=1;
     public Computer(String systemName, String systemSpeed, String ramSize, String hardDiskSize, String icdMakeModel) {
         this.systemId = String.valueOf(counter);

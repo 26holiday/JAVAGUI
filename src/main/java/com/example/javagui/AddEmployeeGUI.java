@@ -22,8 +22,23 @@ public class AddEmployeeGUI extends Application implements Serializable {
     }
 
     public void addEmployee(String name, String grade) {
-        Employee employee = new Employee(name, grade);
+        Employee employee;
+        if (employeeType.equals("HOD")) {
+            employee = new HOD(name, grade);
+        } else if (employeeType.equals("Lab Incharge")) {
+            employee = new LabStaff(name, grade);
+        } else if (employeeType.equals("Director")) {
+            employee = new Director(name, grade);
+        } else if (employeeType.equals("Lab Staff")) {
+            employee = new LabStaff(name, grade);
+        } else {
+            System.out.println("Invalid employee type.");
+            return;
+        }
+
         employees.add(employee);
+        System.out.println(employeeType + " added: " + name + " (" + grade + ")");
+        serializeEmployees(employees);
     }
 
     @Override
@@ -41,11 +56,12 @@ public class AddEmployeeGUI extends Application implements Serializable {
         ComboBox<String> employeeTypeComboBox = new ComboBox<>();
         employeeTypeComboBox.getItems().addAll("HOD", "Lab Incharge", "Director", "Lab Staff");
         employeeTypeComboBox.setValue("HOD");
+
         gridPane.add(employeeTypeLabel, 0, 0);
         gridPane.add(employeeTypeComboBox, 1, 0);
 
         employeeTypeComboBox.setOnAction(e -> {
-            employeeType = employeeTypeComboBox.getValue().toString();
+            employeeType = employeeTypeComboBox.getValue();
             System.out.println("Employee type selected: " + employeeType);
         });
 
@@ -67,32 +83,13 @@ public class AddEmployeeGUI extends Application implements Serializable {
             String name = nameField.getText();
             String grade = gradeField.getText();
 
-            if (employeeType.equals("HOD")) {
-                // Create an HOD object
-                HOD hod = new HOD(name, grade);
-                employees.add(hod);
-                System.out.println("HOD added: " + name + " (" + grade + ")");
-            } else if (employeeType.equals("Lab Incharge")) {
-                // Create a LabIncharge object
-                LabStaff labIncharge = new LabStaff(name, grade);
-                employees.add(labIncharge);
-                System.out.println("Lab Incharge added: " + name + " (" + grade + ")");
-            } else if (employeeType.equals("Director")) {
-                // Create a Director object
-                Director director = new Director(name, grade);
-                employees.add(director);
-                System.out.println("Director added: " + name + " (" + grade + ")");
-            } else if (employeeType.equals("Lab Staff")) {
-                // Create a LabStaff object
-                LabStaff labStaff = new LabStaff(name, grade);
-                employees.add(labStaff);
-                System.out.println("Lab Staff added: " + name + " (" + grade + ")");
+            if (employeeType != null) {
+                addEmployee(name, grade);
+                nameField.clear();
+                gradeField.clear();
+            } else {
+                System.out.println("Please select an employee type.");
             }
-            employees.addAll(deserializeEmployees());
-            serializeEmployees(employees);
-
-            nameField.clear();
-            gradeField.clear();
         });
 
         gridPane.add(addButton, 0, 3);
@@ -121,6 +118,7 @@ public class AddEmployeeGUI extends Application implements Serializable {
             FileInputStream fileIn = new FileInputStream("Employees.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             employees = (ArrayList<Employee>) in.readObject();
+            System.out.println(employees);
             in.close();
             fileIn.close();
             System.out.println("Employees deserialized from Employees.ser");
