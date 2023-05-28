@@ -21,6 +21,22 @@ public class CampusGUI extends Application {
         launch(args);
     }
 
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
+    }
+
+    public ArrayList<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(ArrayList<Department> departments) {
+        this.departments = departments;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Campus GUI");
@@ -56,7 +72,7 @@ public class CampusGUI extends Application {
         addDepartmentButton.setOnAction(e -> {
             // Create an instance of AddDepartmentGUI and retrieve the Department object
             DepartmentGUI addDepartmentGUI = new DepartmentGUI();
-            addDepartmentGUI.display(primaryStage);
+            addDepartmentGUI.display();
             Department department = new Department(addDepartmentGUI.getHod(), addDepartmentGUI.getLabs());
 
             if (department != null) {
@@ -66,6 +82,7 @@ public class CampusGUI extends Application {
 
         gridPane.add(addDepartmentButton, 0, 2, 2, 1); // Span the button across two columns
 
+        Scene scene = new Scene(gridPane, 400, 200);
         // Add button to submit the form
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
@@ -83,7 +100,7 @@ public class CampusGUI extends Application {
 
         gridPane.add(submitButton, 0, 3, 2, 1); // Span the button across two columns
 
-        Scene scene = new Scene(gridPane, 400, 200);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }

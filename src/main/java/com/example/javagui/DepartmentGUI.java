@@ -35,7 +35,8 @@ public class DepartmentGUI {
     }
 
 
-    public void display(Stage primaryStage) {
+    public void display() {
+        Stage primaryStage = new Stage();
         primaryStage.setTitle("Department GUI");
 
         // Create the GridPane layout
