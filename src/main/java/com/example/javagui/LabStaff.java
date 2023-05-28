@@ -1,6 +1,6 @@
 package com.example.javagui;
 import java.io.Serializable;
-public class LabStaff extends Employee implements Serializable{
+public class LabStaff extends Employee{
 
     @Override
     public String toString() {
