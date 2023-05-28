@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
+import java.io.*;
+
 public class AddEmployeeGUI extends Application {
 
     ArrayList<Employee> employees = new ArrayList<>();
@@ -43,7 +45,7 @@ public class AddEmployeeGUI extends Application {
         gridPane.add(employeeTypeComboBox, 1, 0);
 
         employeeTypeComboBox.setOnAction(e -> {
-            employeeType = employeeTypeComboBox.getValue();
+            employeeType = employeeTypeComboBox.getValue().toString();
             System.out.println("Employee type selected: " + employeeType);
         });
 
@@ -86,15 +88,45 @@ public class AddEmployeeGUI extends Application {
                 employees.add(labStaff);
                 System.out.println("Lab Staff added: " + name + " (" + grade + ")");
             }
+//            deserializeEmployees();
+//            serializeEmployees(employees);
 
             nameField.clear();
             gradeField.clear();
         });
 
-        gridPane.add(addButton, 0, 2);
+        gridPane.add(addButton, 0, 3);
 
         Scene scene = new Scene(gridPane, 500, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public static void serializeEmployees(ArrayList<Employee> employees) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("Employees.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(employees);
+            out.close();
+            fileOut.close();
+            System.out.println("Employees serialized and saved to Employees.ser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Employee> deserializeEmployees() {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            FileInputStream fileIn = new FileInputStream("Employees.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            employees = (ArrayList<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+            System.out.println("Employees deserialized from Employees.ser");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return employees;
     }
 }
