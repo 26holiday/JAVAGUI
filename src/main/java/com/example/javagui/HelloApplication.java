@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException, ClassNotFoundException {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         Button button = new Button("Click me!");
@@ -26,9 +26,6 @@ public class HelloApplication extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene1);
         stage.show();
-
-
-
     }
 
     public static void main(String[] args) {

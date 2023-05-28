@@ -12,7 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import java.io.*;
 
-public class AddEmployeeGUI extends Application implements Serializable {
+public class AddEmployeeGUI extends Application {
 
     ArrayList<Employee> employees = new ArrayList<>();
     String employeeType;

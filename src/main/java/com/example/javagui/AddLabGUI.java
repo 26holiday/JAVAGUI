@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class AddLabGUI extends Application {
 
     ArrayList<Lab> labs = new ArrayList<>();
-    LabStaff incharge;
+    ArrayList<LabStaff> labStaff = new ArrayList<>();
     boolean hasProjector;
     ArrayList<Computer> computers = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class AddLabGUI extends Application {
     }
 
     public void addLab(LabStaff incharge, boolean hasProjector, ArrayList<Computer> computers) {
-        Lab lab = new Lab(incharge, hasProjector, computers);
+        Lab lab = new Lab(incharge, hasProjector, computers, labStaff);
         labs.add(lab);
         System.out.println("Lab added: " + lab.toString());
         serializeLabs(labs);
@@ -35,6 +35,13 @@ public class AddLabGUI extends Application {
         computers.add(computer);
         System.out.println("Computer added: " + computer.getSystemDetails());
         serializeComputers(computers);
+    }
+
+    //method to add lab staff
+    public void addLabStaff(LabStaff LabStaff) {
+        labStaff.add(LabStaff);
+        System.out.println("Lab Staff added: " + labStaff.toString());
+//        serializeLabStaff(labStaff);
     }
 
     @Override
@@ -56,25 +63,92 @@ public class AddLabGUI extends Application {
         col2.setPrefWidth(300);
         gridPane.getColumnConstraints().add(col2);
 
-        // Add label and text field for lab incharge
-        Label inchargeLabel = new Label("Incharge:");
-        TextField inchargeField = new TextField();
-        gridPane.add(inchargeLabel, 0, 0);
-        gridPane.add(inchargeField, 1, 0);
+
+        // Add label and text field for both name and grade of Lab Incharge
+        Label inchargeNameLabel = new Label("Name:");
+        TextField inchargeNameField = new TextField();
+        gridPane.add(inchargeNameLabel, 0, 0);
+        gridPane.add(inchargeNameField, 1, 0);
+        Label inchargeGradeLabel = new Label("Grade:");
+        TextField inchargeGradeField = new TextField();
+        gridPane.add(inchargeGradeLabel, 0, 1);
+        gridPane.add(inchargeGradeField, 1, 1);
+
+
 
         // Add checkbox for projector
         Label projectorLabel = new Label("Has Projector:");
         CheckBox projectorCheckBox = new CheckBox();
-        gridPane.add(projectorLabel, 0, 1);
-        gridPane.add(projectorCheckBox, 1, 1);
+        gridPane.add(projectorLabel, 0, 2);
+        gridPane.add(projectorCheckBox, 1, 2);
+
+        // Add lab staff details section
+        Label labStaffLabel = new Label("Lab Staff:");
+        TextArea labStaffTextArea = new TextArea();
+        labStaffTextArea.setEditable(false);
+        labStaffTextArea.setPrefRowCount(5);
+        gridPane.add(labStaffLabel, 0, 4);
+        gridPane.add(labStaffTextArea, 1, 4);
+
+
+        // Add button to add lab staff
+        Button addLabStaffButton = new Button("Add Lab Staff");
+        addLabStaffButton.setOnAction(e -> {
+            // Create a dialog to get lab staff details from the user
+            Dialog<LabStaff> dialog = new Dialog<>();
+            dialog.setTitle("Add Lab Staff");
+            dialog.setHeaderText("Enter lab staff details");
+
+            // Set the button types
+            ButtonType addButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
+
+            // Create the lab staff details form
+            GridPane dialogGrid = new GridPane();
+            dialogGrid.setHgap(10);
+            dialogGrid.setVgap(10);
+            dialogGrid.setPadding(new Insets(10));
+
+            dialogGrid.getColumnConstraints().add(col1);
+            dialogGrid.getColumnConstraints().add(col2);
+
+            TextField nameField = new TextField();
+            TextField gradeField = new TextField();
+
+            dialogGrid.addRow(0, new Label("Name:"), nameField);
+            dialogGrid.addRow(1, new Label("Grade:"), gradeField);
+
+            dialog.getDialogPane().setContent(dialogGrid);
+
+            // Convert the result to a LabStaff object when the add button is clicked
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == addButton) {
+                    String name = nameField.getText();
+                    String grade = gradeField.getText();
+
+                    LabStaff labStaff = new LabStaff(name, grade);
+                    addLabStaff(labStaff);
+                    labStaffTextArea.appendText(labStaff.getName() + " - " + labStaff.getGrade() + "\n"); // Append the lab staff details to the text area
+                    return labStaff;
+                }
+                return null;
+            });
+
+            dialog.showAndWait();
+        });
+
+        gridPane.add(addLabStaffButton, 0, 4); // Add the addLabStaffButton to the grid pane
+
 
         // Add computer details section
         Label computerLabel = new Label("Computers:");
         TextArea computerTextArea = new TextArea();
         computerTextArea.setEditable(false);
         computerTextArea.setPrefRowCount(5);
-        gridPane.add(computerLabel, 0, 2);
-        gridPane.add(computerTextArea, 1, 2);
+        gridPane.add(computerLabel, 0, 3);
+        gridPane.add(computerTextArea, 1, 3);
+
+
 
         // Add button to add computer
         Button addComputerButton = new Button("Add Computer");
@@ -134,15 +208,18 @@ public class AddLabGUI extends Application {
         // Add button to add lab
         Button addLabButton = new Button("Add Lab");
         addLabButton.setOnAction(e -> {
-            String incharge = inchargeField.getText();
+            String inchargeName = inchargeNameField.getText();
+            String inchargeGrade = inchargeGradeField.getText();
+            LabStaff incharge = new LabStaff(inchargeName, inchargeGrade);
+
             boolean hasProjector = projectorCheckBox.isSelected();
-            addLab(new LabStaff(incharge , "test"), hasProjector, computers);
+            addLab(incharge, hasProjector, computers);
             computers.clear(); // Clear the computers list
             computerTextArea.clear(); // Clear the computer details text area
         });
 
         gridPane.add(addComputerButton, 0, 3);
-        gridPane.add(addLabButton, 1, 3); // Add the addLabButton to the grid pane
+        gridPane.add(addLabButton, 1, 5); // Add the addLabButton to the grid pane
 
         Scene scene = new Scene(gridPane, 500, 300);
         primaryStage.setScene(scene);

@@ -16,6 +16,7 @@ public class University implements java.io.Serializable{
     String name;
     ArrayList<Campus> campuses;
 
+
     University(String name, ArrayList<Campus> campuses) {
         this.name = name;
         this.campuses = campuses;
