@@ -8,24 +8,23 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.geometry.Insets;
-
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
 
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class UniversityGUI {
+public class UniversityGUI extends Application {
 
     private String name;
     private ArrayList<Campus> campuses= new ArrayList<>();
 
     private University university;
 
-    public void display(Stage stage) throws Exception {
+    private CampusGUI campusGUI = new CampusGUI();
+
+    @Override
+    public void start(Stage stage) throws Exception {
         stage.setTitle("University GUI");
 
         // Create the GridPane layout
@@ -49,9 +48,10 @@ public class UniversityGUI {
         Button addCampusButton = new Button("Add Campus");
         gridPane.add(addCampusButton, 0, 1);
 
+
         addCampusButton.setOnAction(e -> {
             // Create a new campus object
-            CampusGUI campusGUI = new CampusGUI();
+
             // Add the campus to the university
             campusGUI.display();
             addCampus(campusGUI.getCampus());
@@ -62,11 +62,12 @@ public class UniversityGUI {
         // Add a button to submit the university
         Button submitButton = new Button("Submit");
         gridPane.add(submitButton, 0, 2);
-        name = nameField.getText();
+
         submitButton.setOnAction(e -> {
             // Create a new university object
-
-            university = new University(name, campuses);
+            name = nameField.getText();
+            university = new University(name, new ArrayList<>(campuses));
+            System.out.println("University object: " + university.getName());
             // Save the university object
             saveUniversity(university);
             // Serialize the university object
@@ -131,7 +132,7 @@ public class UniversityGUI {
     public static University deserializeUniversity() {
         University university =null;
         try {
-            FileInputStream fileIn = new FileInputStream("Employees.ser");
+            FileInputStream fileIn = new FileInputStream("University.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             university = (University) in.readObject();
             System.out.println(university);
@@ -144,4 +145,7 @@ public class UniversityGUI {
         return university;
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
