@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import java.io.*;
 import java.util.ArrayList;
 
-public class UniversityGUI extends Application {
+public class UniversityGUI {
 
     private String name;
     private ArrayList<Campus> campuses= new ArrayList<>();
@@ -23,8 +23,7 @@ public class UniversityGUI extends Application {
 
     private CampusGUI campusGUI = new CampusGUI();
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void display(Stage stage) throws Exception {
         stage.setTitle("University GUI");
 
         // Create the GridPane layout
@@ -145,7 +144,5 @@ public class UniversityGUI extends Application {
         return university;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 }
