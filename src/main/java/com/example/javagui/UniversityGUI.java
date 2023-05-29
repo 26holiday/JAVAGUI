@@ -8,21 +8,24 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.geometry.Insets;
+
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class UniversityGUI extends Application {
+public class UniversityGUI {
 
     private String name;
     private ArrayList<Campus> campuses= new ArrayList<>();
 
     private University university;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void display(Stage stage) throws Exception {
         stage.setTitle("University GUI");
 
         // Create the GridPane layout
@@ -141,7 +144,4 @@ public class UniversityGUI extends Application {
         return university;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

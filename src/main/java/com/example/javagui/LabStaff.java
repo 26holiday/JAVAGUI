@@ -7,8 +7,11 @@ public class LabStaff extends Employee{
         return "LabStaff{ name = " + getName() + ", grade = " + getGrade() + " }";
     }
 
+    public LabStaff(String name, String grade , String email , String password) {
+        super(name, grade , email , password);
+    }
+
     public LabStaff(String name, String grade) {
         super(name, grade);
     }
-
 }
