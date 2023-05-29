@@ -53,6 +53,13 @@ public class University implements java.io.Serializable{
     }
 
     public void saveData(){
+    }
 
+    @Override
+    public String toString() {
+        return "University{" +
+                "name='" + name + '\'' +
+                ", campuses=" + campuses +
+                '}';
     }
 }

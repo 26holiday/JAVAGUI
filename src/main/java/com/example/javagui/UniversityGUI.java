@@ -1,15 +1,14 @@
 package com.example.javagui;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.geometry.Insets;
-
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
 
 
 import java.io.*;
@@ -18,21 +17,9 @@ import java.util.ArrayList;
 public class UniversityGUI extends Application {
 
     private String name;
-    private ArrayList<Campus> campuses;
+    private ArrayList<Campus> campuses= new ArrayList<>();
 
-
-
-
-
-    public UniversityGUI(String name, ArrayList<Campus> campuses) {
-        this.name = name;
-        this.campuses = campuses;
-    }
-
-    public UniversityGUI() {
-        this.name = "";
-        this.campuses = new ArrayList<>();
-    }
+    private University university;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -43,40 +30,71 @@ public class UniversityGUI extends Application {
         gridPane.setPadding(new Insets(10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-    }
 
+        // Add column constraints to adjust column width
+        ColumnConstraints col1Constraints = new ColumnConstraints();
+        col1Constraints.setPrefWidth(100);
+        gridPane.getColumnConstraints().add(col1Constraints);
+
+        // Add a label and textbox for the university name
+        Label nameLabel = new Label("University Name:");
+        TextField nameField = new TextField();
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameField, 1, 0);
+
+        // Add a button to add a campus
+        Button addCampusButton = new Button("Add Campus");
+        gridPane.add(addCampusButton, 0, 1);
+
+        addCampusButton.setOnAction(e -> {
+            // Create a new campus object
+            CampusGUI campusGUI = new CampusGUI();
+            // Add the campus to the university
+            campusGUI.display();
+            addCampus(campusGUI.getCampus());
+            // Print the campuses
+            printCampuses();
+        });
+
+        // Add a button to submit the university
+        Button submitButton = new Button("Submit");
+        gridPane.add(submitButton, 0, 2);
+        name = nameField.getText();
+        submitButton.setOnAction(e -> {
+            // Create a new university object
+
+            university = new University(name, campuses);
+            // Save the university object
+            saveUniversity(university);
+            // Serialize the university object
+            serializeUniversity(university);
+
+        });
+
+        Scene scene = new Scene(gridPane, 300, 300);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public void addCampus(Campus campus) {
         campuses.add(campus);
     }
 
-    public void removeCampus(Campus campus) {
-        campuses.remove(campus);
-    }
 
     public void printCampuses() {
-        for (Campus campus : campuses) {
-            System.out.println(campus.getName());
+        if(campuses!=null) {
+            for (Campus campus : campuses) {
+                if(campus!=null) {
+                    System.out.println(campus.getName());
+                }
+            }
         }
     }
 
-
-
-    public void saveUniversity() {
-        try {
-            FileOutputStream fileOut = new FileOutputStream("university.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(this);
-            out.close();
-            fileOut.close();
-            System.out.println("Serialized data is saved in university.ser");
-        } catch (IOException i) {
-            i.printStackTrace();
-        }
+    public void saveUniversity(University university) {
+        System.out.println("Saving university object: " + university);
+        // Code for saving the university object
     }
-
-
-
 
     public String getName() {
         return name;
@@ -94,10 +112,36 @@ public class UniversityGUI extends Application {
         this.campuses = campuses;
     }
 
+    public static void serializeUniversity(University university) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("University.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(university);
+            out.close();
+            fileOut.close();
+            System.out.println("University is serialized and saved to University.ser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static University deserializeUniversity() {
+        University university =null;
+        try {
+            FileInputStream fileIn = new FileInputStream("Employees.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            university = (University) in.readObject();
+            System.out.println(university);
+            in.close();
+            fileIn.close();
+            System.out.println("University is deserialized from University.ser");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return university;
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }

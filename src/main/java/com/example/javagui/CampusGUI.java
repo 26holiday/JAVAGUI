@@ -11,13 +11,12 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class CampusGUI extends Application {
+public class CampusGUI{
     private Director director;
     private ArrayList<Department> departments = new ArrayList<>();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private Campus campus;
+
 
     public Director getDirector() {
         return director;
@@ -35,8 +34,18 @@ public class CampusGUI extends Application {
         this.departments = departments;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public Campus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(Campus campus) {
+        this.campus = campus;
+    }
+
+
+    public void display() {
+        Stage primaryStage = new Stage();
+
         primaryStage.setTitle("Campus GUI");
 
         // Create the GridPane layout
@@ -100,7 +109,7 @@ public class CampusGUI extends Application {
             String directorGrade = directorGradeField.getText();
 
             // Create an instance of Campus with the retrieved values
-            Campus campus = new Campus(campusName, campusAddress, new Director(directorName, directorGrade), departments);
+            campus = new Campus(campusName, campusAddress, new Director(directorName, directorGrade), departments);
 
             // Display the values
             System.out.println("Campus: " + campus);
