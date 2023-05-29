@@ -21,6 +21,8 @@ public class UniversityGUI extends Application {
 
     private University university;
 
+    private CampusGUI campusGUI = new CampusGUI();
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("University GUI");
@@ -46,9 +48,10 @@ public class UniversityGUI extends Application {
         Button addCampusButton = new Button("Add Campus");
         gridPane.add(addCampusButton, 0, 1);
 
+
         addCampusButton.setOnAction(e -> {
             // Create a new campus object
-            CampusGUI campusGUI = new CampusGUI();
+
             // Add the campus to the university
             campusGUI.display();
             addCampus(campusGUI.getCampus());
@@ -59,11 +62,12 @@ public class UniversityGUI extends Application {
         // Add a button to submit the university
         Button submitButton = new Button("Submit");
         gridPane.add(submitButton, 0, 2);
-        name = nameField.getText();
+
         submitButton.setOnAction(e -> {
             // Create a new university object
-
-            university = new University(name, campuses);
+            name = nameField.getText();
+            university = new University(name, new ArrayList<>(campuses));
+            System.out.println("University object: " + university.getName());
             // Save the university object
             saveUniversity(university);
             // Serialize the university object
@@ -128,7 +132,7 @@ public class UniversityGUI extends Application {
     public static University deserializeUniversity() {
         University university =null;
         try {
-            FileInputStream fileIn = new FileInputStream("Employees.ser");
+            FileInputStream fileIn = new FileInputStream("University.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             university = (University) in.readObject();
             System.out.println(university);
