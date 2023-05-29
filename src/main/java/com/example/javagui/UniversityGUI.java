@@ -66,7 +66,7 @@ public class UniversityGUI extends Application {
         submitButton.setOnAction(e -> {
             // Create a new university object
             name = nameField.getText();
-            university = new University(name, new ArrayList<>(campuses));
+            university = new University(name, UniversityGUI.this.campuses);
             System.out.println("University object: " + university.getName());
             // Save the university object
             saveUniversity(university);
