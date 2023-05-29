@@ -52,7 +52,7 @@ public class LoginGUI extends Application {
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-
+        //testing change
             } else {
                 System.out.println("Invalid email or password. Please try again.");
                 Alert alert = new Alert(Alert.AlertType.ERROR);

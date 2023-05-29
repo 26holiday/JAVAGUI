@@ -25,7 +25,7 @@ public class UniversityGUI {
 
     public void display(Stage stage) throws Exception {
         stage.setTitle("University GUI");
-
+        //testing change
         // Create the GridPane layout
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
