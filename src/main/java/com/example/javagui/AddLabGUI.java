@@ -11,9 +11,36 @@ import javafx.stage.Stage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AddLabGUI {
+
+    private static Connection getConnection() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/university";
+        String user = "root";
+        String pass = "Legend030012345@";
+        return DriverManager.getConnection(url, user, pass);
+    }
+
+    private static void insertData(String systemName, String systemSpeed, String ramSize, String hardDiskSize, String icdMakeModel) {
+        try (Connection connection = getConnection()) {
+            String query = "INSERT INTO computer (name, speed, ram, harddisk, icdMakeModel) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, systemName);
+            statement.setString(2, systemSpeed);
+            statement.setString(3, ramSize);
+            statement.setString(4, hardDiskSize);
+            statement.setString(5, icdMakeModel);
+            statement.executeUpdate();
+            System.out.println("Data inserted successfully!");
+        } catch (SQLException e) {
+            System.err.println("Error inserting data: " + e.getMessage());
+        }
+    }
 
     static ArrayList<Lab> labs = new ArrayList<>();
     static ArrayList<LabStaff> labStaff = new ArrayList<>();
@@ -178,6 +205,8 @@ public class AddLabGUI {
             TextField hardDiskSizeField = new TextField();
             TextField icdMakeModelField = new TextField();
 
+
+
             dialogGrid.addRow(0, new Label("System Name:"), systemNameField);
             dialogGrid.addRow(1, new Label("System Speed:"), systemSpeedField);
             dialogGrid.addRow(2, new Label("RAM Size:"), ramSizeField);
@@ -197,6 +226,9 @@ public class AddLabGUI {
 
                     Computer computer = new Computer(systemName, systemSpeed, ramSize, hardDiskSize, icdMakeModel);
                     addComputer(computer);
+
+                    insertData(systemName, systemSpeed, ramSize, hardDiskSize, icdMakeModel);
+
                     computerTextArea.appendText(computer.getSystemName() + "\n"); // Append the computer name to the text area
                     return computer;
                 }

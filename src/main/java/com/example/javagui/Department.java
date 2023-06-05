@@ -15,6 +15,14 @@ public class Department {
         this.labs = labs;
     }
 
+    @Override
+    public String toString() {
+        return "Department{" +
+                "hod=" + hod +
+                ", labs=" + labs +
+                '}';
+    }
+
     public HOD getHod() {
         return hod;
     }

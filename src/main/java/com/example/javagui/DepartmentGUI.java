@@ -12,6 +12,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class DepartmentGUI {
     private HOD hod;
@@ -34,6 +38,24 @@ public class DepartmentGUI {
         this.labs = labs;
     }
 
+    private Connection getConnection() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/university";
+        String user = "root";
+        String pass = "Legend030012345@";
+        return DriverManager.getConnection(url, user, pass);
+    }
+    private void insertData(String hodName, String hodGrade) {
+        try (Connection connection = getConnection()) {
+            String query = "INSERT INTO department (HOD, grade) VALUES (?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, hodName);
+            statement.setString(2, hodGrade);
+            statement.executeUpdate();
+            System.out.println("Data inserted successfully!");
+        } catch (SQLException e) {
+            System.err.println("Error inserting data: " + e.getMessage());
+        }
+    }
 
     public void display() {
         Stage primaryStage = new Stage();
@@ -87,6 +109,8 @@ public class DepartmentGUI {
             // Create an instance of HOD with the retrieved values
             hod = new HOD(hodName, hodGrade);
             setHod(hod);
+
+            insertData(hodName, hodGrade);
 
             // Display the values
             System.out.println("HOD: " + hod);

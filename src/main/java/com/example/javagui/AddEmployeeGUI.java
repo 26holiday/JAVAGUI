@@ -11,6 +11,11 @@ import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AddEmployeeGUI extends Application {
 
@@ -87,6 +92,22 @@ public class AddEmployeeGUI extends Application {
                 addEmployee(name, grade);
                 nameField.clear();
                 gradeField.clear();
+
+                // Store employee data in the database
+                String url = "jdbc:mysql://localhost:3306/university";
+                String user = "root";
+                String pass = "Legend030012345@";
+
+                try (Connection connection = DriverManager.getConnection(url, user, pass)) {
+                    String insertQuery = "INSERT INTO employees (name, grade) VALUES (?, ?)";
+                    PreparedStatement statement = connection.prepareStatement(insertQuery);
+                    statement.setString(1, name);
+                    statement.setString(2, grade);
+                    statement.executeUpdate();
+                    System.out.println("Employee data stored in the database successfully.");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             } else {
                 System.out.println("Please select an employee type.");
             }

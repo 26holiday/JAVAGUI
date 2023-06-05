@@ -9,17 +9,25 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class UniversityGUI {
+public class UniversityGUI implements Serializable {
 
     private String name;
     private ArrayList<Campus> campuses= new ArrayList<>();
 
     private University university;
+
 
     private CampusGUI campusGUI = new CampusGUI();
 
@@ -66,12 +74,28 @@ public class UniversityGUI {
             // Create a new university object
             name = nameField.getText();
             university = new University(name, UniversityGUI.this.campuses);
-            System.out.println("University object: " + university.getName());
+            System.out.println("University object: " + university);
+
             // Save the university object
             saveUniversity(university);
+
             // Serialize the university object
             serializeUniversity(university);
 
+            // Store the university name in the database
+             String url = "jdbc:mysql://localhost:3306/university";
+             String user = "root";
+             String pass = "Legend030012345@";
+
+            try (Connection connection = DriverManager.getConnection(url, user, pass)) {
+                String query = "INSERT INTO university (name) VALUES (?)";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, university.getName());
+                int rowsAffected = statement.executeUpdate();
+                System.out.println("Rows affected: " + rowsAffected);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         });
 
         Scene scene = new Scene(gridPane, 300, 300);

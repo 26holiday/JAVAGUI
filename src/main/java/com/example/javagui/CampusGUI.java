@@ -9,9 +9,17 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-public class CampusGUI{
+public class CampusGUI implements Serializable {
     private Director director;
     private ArrayList<Department> departments = new ArrayList<>();
 
@@ -114,7 +122,44 @@ public class CampusGUI{
             // Display the values
             System.out.println("Campus: " + campus);
 
+            Connection connection = null;
+
+            try {
+               String url = "jdbc:mysql://localhost:3306/university";
+               String user = "root";
+               String pass = "Legend030012345@";
+
+                connection = DriverManager.getConnection(url, user, pass);
+                // Handle database operations here
+                String query = "INSERT INTO campus (name, director, address) VALUES (?, ?, ?)";
+
+                try {
+                    assert connection != null;
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setString(1, nameField.getText());  // Get the name from GUI field
+                    preparedStatement.setString(2, directorNameField.getText());  // Get the director from GUI field
+                    preparedStatement.setString(3, addressField.getText());  // Get the address from GUI field
+
+                    preparedStatement.executeUpdate();
+                    System.out.println("Data inserted successfully!");
+                } catch (SQLException E) {
+                    E.printStackTrace();
+                }
+            } catch (SQLException E) {
+                E.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException E) {
+                        E.printStackTrace();
+                    }
+                }
+            }
+
+
             // Save the campus object to a file or perform other operations
+
 
         });
 
